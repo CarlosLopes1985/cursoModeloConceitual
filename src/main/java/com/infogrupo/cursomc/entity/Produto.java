@@ -8,11 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Categoria implements Serializable {
-	
+public class Produto implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -22,42 +24,66 @@ public class Categoria implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private Double preco;
 	
-	@ManyToMany(mappedBy="categorias")
-	private List<Produto>produtos = new ArrayList<>();
+	@ManyToMany
+	@JoinTable(	name = "PRODUTO_CATEGORIA",
+				joinColumns = @JoinColumn(name="produto_id"),
+				inverseJoinColumns = @JoinColumn(name="categoria_id")
+			  )
+	private List<Categoria>categorias = new ArrayList<>();
 	
-	public Categoria() {
+	public Produto() {
+		super();
 	}
+
 	
-	public Categoria(Integer id, String nome) {
+	public Double getPreco() {
+		return preco;
+	}
+
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Produto [id=" + id + ", nome=" + nome + ", preco=" + preco + "]";
+	}
+
+
+	public Produto(Integer id, String nome, Double preco) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.preco = preco;
 	}
-	
+
+
 	public Integer getId() {
 		return id;
 	}
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
-	
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	
-	public List<Produto> getProdutos() {
-		return produtos;
+
+	public List<Categoria> getCategorias() {
+		return categorias;
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias = categorias;
 	}
 
 	@Override
@@ -65,10 +91,9 @@ public class Categoria implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -77,24 +102,12 @@ public class Categoria implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Produto other = (Produto) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
-			return false;
 		return true;
 	}
-	
-	@Override
-	public String toString() {
-		return "Categoria [id=" + id + ", nome=" + nome + "]";
-	}
-	
-	
 }
