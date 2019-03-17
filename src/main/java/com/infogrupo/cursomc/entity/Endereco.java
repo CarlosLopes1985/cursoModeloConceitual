@@ -12,13 +12,9 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Endereco  implements Serializable{
-
-	/**
-	 * 
-	 */
+public class Endereco implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
@@ -38,7 +34,6 @@ public class Endereco  implements Serializable{
 	private Cidade cidade;
 	
 	public Endereco() {
-		super();
 	}
 
 	public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep,
@@ -51,7 +46,7 @@ public class Endereco  implements Serializable{
 		this.bairro = bairro;
 		this.cep = cep;
 		this.cliente = cliente;
-		this.cidade = cidade;
+		this.setCidade(cidade);
 	}
 
 	public Integer getId() {

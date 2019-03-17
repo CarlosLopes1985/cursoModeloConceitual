@@ -16,7 +16,7 @@ import com.infogrupo.cursomc.entity.Estado;
 import com.infogrupo.cursomc.entity.ItemPedido;
 import com.infogrupo.cursomc.entity.Pagamento;
 import com.infogrupo.cursomc.entity.PagamentoComBoleto;
-import com.infogrupo.cursomc.entity.PagamentoComCartão;
+import com.infogrupo.cursomc.entity.PagamentoComCartao;
 import com.infogrupo.cursomc.entity.Pedido;
 import com.infogrupo.cursomc.entity.Produto;
 import com.infogrupo.cursomc.entity.enums.EstadoPagamento;
@@ -122,7 +122,7 @@ public class CursomcApplication implements CommandLineRunner {
 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, end1);
 		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2015 17:32"), cli1, end2);
 
-		Pagamento pag1 = new PagamentoComCartão(null, EstadoPagamento.QUITADA, ped1, 6);
+		Pagamento pag1 = new PagamentoComCartao(null, EstadoPagamento.QUITADA, ped1, 6);
 		ped1.setPagamento(pag1);
 
 		Pagamento pag2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 18:35"),
