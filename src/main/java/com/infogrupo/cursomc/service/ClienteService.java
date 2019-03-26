@@ -17,8 +17,11 @@ import com.infogrupo.cursomc.dto.ClienteNewDTO;
 import com.infogrupo.cursomc.entity.Cidade;
 import com.infogrupo.cursomc.entity.Cliente;
 import com.infogrupo.cursomc.entity.Endereco;
+import com.infogrupo.cursomc.entity.enums.Perfil;
 import com.infogrupo.cursomc.entity.enums.TipoCliente;
 import com.infogrupo.cursomc.repositories.ClienteRepository;
+import com.infogrupo.cursomc.security.UserSS;
+import com.infogrupo.cursomc.service.exceptions.AuthorizationException;
 import com.infogrupo.cursomc.service.exceptions.ObjectNotFoundException;
 
 @Service
@@ -31,6 +34,13 @@ public class ClienteService {
 	private BCryptPasswordEncoder pe;
 	
 	public Cliente find(Integer id) {  
+		
+		UserSS user = UserService.authenticated();
+		
+		if(user == null || !user.hasRole(Perfil.ADMIN)&& !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Optional<Cliente> obj = clienteRepository.findById(id);  
 		return obj.orElseThrow(() -> new ObjectNotFoundException(    
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName())); 
