@@ -29,30 +29,32 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	}
 
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest req,
-			HttpServletResponse res) throws AuthenticationException {
-			
+    public Authentication attemptAuthentication(HttpServletRequest req,
+                                                HttpServletResponse res) throws AuthenticationException {
+
 		try {
-			CredenciaisDTO creds = new ObjectMapper().readValue(req.getInputStream(), CredenciaisDTO.class);
-			
-			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getSenha(),new ArrayList<>());
-			
-			Authentication auth = authenticationManager.authenticate(authToken);
-			
-			return auth;
-			
-		} catch (IOException e) {
-			// TODO: handle exception
+			CredenciaisDTO creds = new ObjectMapper()
+	                .readValue(req.getInputStream(), CredenciaisDTO.class);
+	
+	        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getSenha(), new ArrayList<>());
+	        
+	        Authentication auth = authenticationManager.authenticate(authToken);
+	        return auth;
+		}
+		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
 	@Override
-	protected void successfulAuthentication(HttpServletRequest req,
-			HttpServletResponse res, FilterChain chain,Authentication auth)throws IOException, ServletException {
-		
+    protected void successfulAuthentication(HttpServletRequest req,
+                                            HttpServletResponse res,
+                                            FilterChain chain,
+                                            Authentication auth) throws IOException, ServletException {
+	
 		String username = ((UserSS) auth.getPrincipal()).getUsername();
-		String token = jwtUtil.generateToken(username);
-		res.addHeader("Authorization", "Bearer"+token);
+        String token = jwtUtil.generateToken(username);
+        res.addHeader("Authorization", "Bearer " + token);
+        res.addHeader("access-control-expose-headers", "Authorization");
 	}
 }
